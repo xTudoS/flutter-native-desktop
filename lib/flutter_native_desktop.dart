@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -12,7 +11,7 @@ class FlutterNativeDesktop {
     return version;
   }
 
-  static Future call(String command) async {
-    await _channel.invokeMethod("call", {"command": command});
+  static Future<String> call(String command) async {
+    return await _channel.invokeMethod("call", {"command": command});
   }
 }

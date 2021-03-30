@@ -5,6 +5,10 @@
 #include <sys/utsname.h>
 
 #include <cstring>
+#include <iostream>
+#include <stdexcept>
+#include <stdio.h>
+#include <string>
 
 const char kCommandKey[] = "command";
 
@@ -18,6 +22,24 @@ struct _FlutterNativeDesktopPlugin {
 
 G_DEFINE_TYPE(FlutterNativeDesktopPlugin, flutter_native_desktop_plugin,
               g_object_get_type())
+
+std::string exec(const char *cmd) {
+  char buffer[128];
+  std::string result = "";
+  FILE *pipe = popen(cmd, "r");
+  if (!pipe)
+    throw std::runtime_error("popen() failed!");
+  try {
+    while (fgets(buffer, sizeof buffer, pipe) != NULL) {
+      result += buffer;
+    }
+  } catch (...) {
+    pclose(pipe);
+    throw;
+  }
+  pclose(pipe);
+  return result;
+}
 
 // Called when a method call is received from Flutter.
 static void flutter_native_desktop_plugin_handle_method_call(
@@ -35,8 +57,8 @@ static void flutter_native_desktop_plugin_handle_method_call(
   } else if (strcmp(method, "call") == 0) {
     FlValue *command_value = fl_value_lookup_string(args, kCommandKey);
     char *command = g_strdup(fl_value_get_string(command_value));
-    std::system(command);
-    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    std::string c = exec(command);
+    g_autoptr(FlValue) result = fl_value_new_string(c.c_str());
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 
   } else {
