@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
   void _showNativeMsg(String msg) async {
     try {
-      await FlutterNativeDesktop.call("echo $msg");
+      print(await FlutterNativeDesktop.call("echo $msg"));
     } on PlatformException {
       print("Error to show: $msg");
     }
