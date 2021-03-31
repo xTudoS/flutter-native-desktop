@@ -1,5 +1,6 @@
 #include "include/flutter_native_desktop/flutter_native_desktop_plugin.h"
 
+#include <cstdlib>
 #include <flutter_linux/flutter_linux.h>
 #include <gtk/gtk.h>
 #include <sys/utsname.h>
@@ -64,7 +65,7 @@ static void flutter_native_desktop_plugin_handle_method_call(
   } else if (strcmp(method, "run") == 0) {
     FlValue *command_value = fl_value_lookup_string(args, kCommandKey);
     char *command = g_strdup(fl_value_get_string(command_value));
-    exec(command);
+    std::system(command);
     g_autoptr(FlValue) result = fl_value_new_string("");
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 
