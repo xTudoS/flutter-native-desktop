@@ -61,6 +61,13 @@ static void flutter_native_desktop_plugin_handle_method_call(
     g_autoptr(FlValue) result = fl_value_new_string(c.c_str());
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 
+  } else if (strcmp(method, "run") == 0) {
+    FlValue *command_value = fl_value_lookup_string(args, kCommandKey);
+    char *command = g_strdup(fl_value_get_string(command_value));
+    exec(command);
+    g_autoptr(FlValue) result = fl_value_new_string("");
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+
   } else {
     response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
   }

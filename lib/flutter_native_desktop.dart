@@ -14,4 +14,8 @@ class FlutterNativeDesktop {
   static Future<String> call(String command) async {
     return await _channel.invokeMethod("call", {"command": command});
   }
+
+  static Future run(String command) async {
+    await _channel.invokeMethod("run", {"command": command});
+  }
 }
