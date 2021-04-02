@@ -108,7 +108,7 @@ void FlutterNativeDesktopPlugin::HandleMethodCall(
     std::string command;
     auto command_it = arguments->find(EncodableValue(kCommandKey));
     command = std::get<std::string>(command_it->second);
-    std::system(command);
+    std::system(command.c_str());
     result->Success(flutter::EncodableValue(""));}
      else {
     result->NotImplemented();
