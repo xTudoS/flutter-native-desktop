@@ -1,3 +1,4 @@
+#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 #include "include/flutter_native_desktop/flutter_native_desktop_plugin.h"
 
 // This must be included before many other Windows headers.
